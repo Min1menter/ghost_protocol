@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Commands</title>
+    <script type="module">
+        import { invoke } from '@tauri-apps/api/core';
+        
+        window.testAdd = async function() {
+            const processName = document.getElementById('processName').value;
+            console.log('Testing add:', processName);
+            try {
+                const result = await invoke('add_to_whitelist', { processName });
+                console.log('Add result:', result);
+                document.getElementById('result').textContent = 'Add success: ' + result;
+            } catch (error) {
+                console.error('Add error:', error);
+                document.getElementById('result').textContent = 'Add error: ' + error;
+            }
+        };
+        
+        window.testGet = async function() {
+            console.log('Testing get whitelist');
+            try {
+                const result = await invoke('get_whitelist');
+                console.log('Get result:', result);
+                document.getElementById('result').textContent = 'Get success: ' + JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error('Get error:', error);
+                document.getElementById('result').textContent = 'Get error: ' + error;
+            }
+        };
+        
+        window.testRemove = async function() {
+            const id = parseInt(document.getElementById('removeId').value);
+            const processName = document.getElementById('removeProcessName').value;
+            console.log('Testing remove:', id, processName);
+            try {
+                const result = await invoke('remove_from_whitelist', { id, processName });
+                console.log('Remove result:', result);
+                document.getElementById('result').textContent = 'Remove success: ' + result;
+            } catch (error) {
+                console.error('Remove error:', error);
+                document.getElementById('result').textContent = 'Remove error: ' + error;
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>Test Tauri Commands</h1>
+    
+    <div>
+        <h2>Add to Whitelist</h2>
+        <input type="text" id="processName" placeholder="Process name" value="test.exe">
+        <button onclick="testAdd()">Add</button>
+    </div>
+    
+    <div>
+        <h2>Get Whitelist</h2>
+        <button onclick="testGet()">Get Whitelist</button>
+    </div>
+    
+    <div>
+        <h2>Remove from Whitelist</h2>
+        <input type="number" id="removeId" placeholder="ID" value="1">
+        <input type="text" id="removeProcessName" placeholder="Process name" value="test.exe">
+        <button onclick="testRemove()">Remove</button>
+    </div>
+    
+    <div>
+        <h2>Result</h2>
+        <pre id="result">No result yet</pre>
+    </div>
+</body>
+</html>
