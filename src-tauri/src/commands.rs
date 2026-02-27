@@ -177,7 +177,7 @@ pub async fn request_ai_explanation(
 ) -> Result<AiExplanation, String> {
     let api_key = std::env::var("API")
         .map_err(|_| "GEMINI_API_KEY not set in environment variables".to_string())?;
-    //let api_key = "AIzaSyAXAdWWJ1UMmXOsZYscQpuZFlbGGhTF4IM";
+    
     let client = reqwest::Client::new();
     
     let prompt = format!(
